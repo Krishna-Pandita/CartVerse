@@ -210,8 +210,6 @@ export const login = async (req, res) => {
   }
 };
 
-
-
 export const logout = async(req,res) =>{
   try {
     const userId = req.id;
@@ -220,6 +218,38 @@ export const logout = async(req,res) =>{
     return res.status(200).json({
       success:true,
       message:"User Logged out Successfully"
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success:false,
+      message:error.message
+    })
+  }
+}
+
+export const forgotPassword = async(req,res)=>{
+  try {
+    const {email} = req.body;
+    const user= await User.findOne({email});
+    if(!user){
+      return res.status(400).json({
+        success:false,
+        message:"User not found"
+      })
+    }
+
+    const otp = Math.floor(100000 + Math.random() *900000).toString();
+    const otpExpiry = Date.now() + 10*60*1000;
+
+    user.otp = otp;
+    user.otpExpiry = otpExpiry;
+
+
+    await user.save();
+    await sendOTPMail(email,otp);
+    return res.status(200).json({
+      success:true,
+      message:"OTP sent to your email successfully"
     })
   } catch (error) {
     return res.status(500).json({

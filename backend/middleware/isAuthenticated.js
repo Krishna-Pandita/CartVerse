@@ -40,6 +40,7 @@ if(!user){
   })
 }
 
+req.user = user;
 req.id = user.id;
 next();
 

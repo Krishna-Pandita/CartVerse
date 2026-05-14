@@ -2,10 +2,17 @@ import express from 'express';
 import dotenv from "dotenv";
 import connectdb from './database/db.js';
 import userRoute from './routes/userRoute.js';
+import cors from 'cors';
+
 
 dotenv.config();
 
 const app = express();
+app.use(cors({
+  origin: 'http://localhost:5174',
+  credentials:true                           // Update with your frontend URL
+}))
+
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());

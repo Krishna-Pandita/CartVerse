@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -26,9 +25,7 @@ const Signup = () => {
     password: "",
   });
 
-
   const navigate = useNavigate();
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;

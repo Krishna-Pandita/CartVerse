@@ -5,6 +5,7 @@ import { verifyEmail } from "../emailVerify/verifyEmail.js";
 import { Session } from "../models/sessionModel.js";
 import { sendOTPMail } from "../emailVerify/sendOTPMail.js";
 
+
 export const register = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
@@ -376,7 +377,6 @@ export const allUser = async(req,res) =>{
   }
 }
 
-
 export const getUserById = async(req,res) =>{
   try {
     const {userId} = req.params;
@@ -398,3 +398,5 @@ export const getUserById = async(req,res) =>{
     });
   }
 }
+
+

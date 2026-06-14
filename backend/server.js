@@ -3,9 +3,11 @@ import dotenv from "dotenv";
 import connectdb from './database/db.js';
 import userRoute from './routes/userRoute.js';
 import cors from 'cors';
+import productRoute from './routes/productRoute.js'
 
 
 dotenv.config();
+
 
 const app = express();
 app.use(cors({
@@ -17,6 +19,8 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use('/api/v1/user', userRoute);
+app.use('/api/v1/product', productRoute);
+
 
 app.get('/', (req, res) => {
   res.send("CartVerse");

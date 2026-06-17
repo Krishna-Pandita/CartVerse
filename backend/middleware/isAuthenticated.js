@@ -15,21 +15,28 @@ export const isAuthenticated = async(req,res,next) =>{
 
  const Token = authHeader.split(" ")[1];
 let decoded;
-try{
-  decoded = jwt.verify(Token,process.env.SECRET_KEY)
-} catch(error){
-if(error.name === "TokenExpiredError"){
-  return res.status(400).json({
-    success:false,
-    message:"Token has expired"
-  })
-}
+try {
+  decoded = jwt.verify(Token, process.env.SECRET_KEY);
+  console.log("DECODED:", decoded);
+} catch (error) {
 
-return res.status(400).json({
-  success:false,
-  message:"Access Token is missing or invalid"
-})
+  console.log("JWT ERROR:", error.message);
+  console.log("TOKEN:", Token);
+  console.log("SECRET_KEY:", process.env.SECRET_KEY);
+
+  if (error.name === "TokenExpiredError") {
+    return res.status(400).json({
+      success: false,
+      message: "Token has expired"
+    });
+  }
+
+  return res.status(400).json({
+    success: false,
+    message: "Access Token is missing or invalid"
+  });
 }
+console.log("USER ID FROM TOKEN:", decoded.id);
 
 const user = await User.findById(decoded.id);
 

@@ -163,6 +163,8 @@ export const removeFromCart = async (req, res) => {
       0,
     );
 
+       cart = await cart.populate("items.productId");
+
     await cart.save();
     res.status(200).json({
       success: true,

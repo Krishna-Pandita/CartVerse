@@ -17,7 +17,6 @@ export const isAuthenticated = async(req,res,next) =>{
 let decoded;
 try {
   decoded = jwt.verify(Token, process.env.SECRET_KEY);
-  console.log("DECODED:", decoded);
 } catch (error) {
 
   console.log("JWT ERROR:", error.message);
@@ -36,7 +35,6 @@ try {
     message: "Access Token is missing or invalid"
   });
 }
-console.log("USER ID FROM TOKEN:", decoded.id);
 
 const user = await User.findById(decoded.id);
 

@@ -14,6 +14,8 @@ import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/userSlice";
 
 const Login = () => {
   const [showPassword, setshowPassword] = useState(false);
@@ -24,6 +26,7 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,6 +53,8 @@ const Login = () => {
 
       if (res.data.success) {
         navigate("/");
+        dispatch(setUser(res.data.user));
+localStorage.setItem("accessToken", res.data.accessToken);
         toast.success(res.data.message);
       }
     } catch (error) {

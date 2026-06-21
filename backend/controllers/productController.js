@@ -138,14 +138,14 @@ export const updateProduct = async (req, res) => {
 
     if (existingImages) {
       const keepIds = JSON.parse(existingImages);
-      updatedImages = product.productImg.filter((img) => {
-        keepIds.includes(img.public_id);
-      });
+     updatedImages = product.productImg.filter((img) =>
+  keepIds.includes(img.public_id)
+);
 
       //DELETE ONLY REMOVED IMAGES
-      const removedImages = product.productImg.filter((img) => {
-        !keepIds.includes(img.public_id);
-      });
+     const removedImages = product.productImg.filter(
+  (img) => !keepIds.includes(img.public_id)
+);
 
       for (let img of removedImages) {
         await cloudinary.uploader.destroy(img.public_id);
@@ -156,7 +156,7 @@ export const updateProduct = async (req, res) => {
 
     //UPLOAD NEW IMAGES IF ANY
     if (req.files && req.files.length > 0) {
-      for (let file of req.file) {
+      for (let file of req.files) {
         const fileUri = getDataUri(file);
         const result = await cloudinary.uploader.upload(fileUri, {
           folder: "mern_products",
@@ -182,7 +182,7 @@ export const updateProduct = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "product updated successfully",
-      product: updateProduct
+      product: product
     });
 
     product.productName = productName || product.productName;

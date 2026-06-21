@@ -8,47 +8,45 @@ import { setUser } from "@/redux/userSlice";
 import { toast } from "sonner";
 
 function Navbar() {
-  const {user} = useSelector((state) => state.user);
+  const {user} = useSelector((store) => store.user);
+  const {cart} = useSelector((store)=> store.product)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const admin = user?.role === "admin" ? true: false
+
 const handleLogout = async () => {
   try {
-    const res = await fetch(
-      
-      "http://localhost:5000/api/v1/user/logout",
-      {
+const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      await fetch("http://localhost:5000/api/v1/user/logout", {
         method: "POST",
         headers: {
-          authorization: `Bearer ${localStorage.getItem("token")}`,
+          authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
-      }
-    );
-
-    const data = await res.json();
-
-    console.log("logout response:", data);
-
-    if (data?.success) {
-      dispatch(setUser(null));
-      localStorage.removeItem("token");
-      toast.success(data.message || "Logged out successfully");
-    } else {
-      toast.error(data?.message || "Logout failed");
+      });
     }
+
+    dispatch(setUser(null));
+    localStorage.removeItem("token");
+    toast.success("Logged out successfully");
+    navigate("/");
   } catch (error) {
     console.log(error);
-    toast.error("Server error during logout");
+    dispatch(setUser(null));
+    localStorage.removeItem("accessToken");
+    toast.error("Logout failed");
   }
 };
 
   return (
     <header className="bg-pink-50 fixed w-full z-20 border-b border-pink-200">
-      <div className="max-w-7xl mx-auto flex justify-between items-center py-3">
+      <div className="max-w-7xl mx-auto h-[77px] flex justify-between items-center py-3">
         {/* Logo Section */}
-        <div>
+        <div className="flex justify-center items-center gap-2">
           <img src={icon1} alt="Logo" className="h-10 w-auto" />
+          <h1 className="font-semibold text-[23px] text-gray-800">CartVerse</h1>
         </div>
         {/* nav section */}
         <nav className="flex justify-between items-center gap-9">
@@ -59,16 +57,30 @@ const handleLogout = async () => {
             <li>
               <Link to="/products">Products</Link>
             </li>
+            
             {user && (
-              <li>
+             
                 <Link to={`/profile/${user._id}`}>Hello, {user.firstName}</Link>
-              </li>
+           
             )}
+
+           {admin && (
+             
+                <Link to={`/dashboard/sales`}>Dashboard</Link>
+           
+            )}
+
+
           </ul>
           <Link to="/cart" className="relative">
             <ShoppingCart />
             <span className="bg-pink-500 rounded-full absolute  px-2 -right-5 -top-3 text-white">
-              0
+             {
+  cart?.items?.reduce(
+    (total, item) => total + item.quantity,
+    0
+  ) || 0
+}
             </span>
           </Link>
           {user ? (

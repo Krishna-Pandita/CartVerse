@@ -200,7 +200,7 @@ useEffect(()=>{
                       <Button variant="outline">Apply</Button>
                     </div>
 
-                    <Button className="w-full bg-pink-600">Place Order</Button>
+                    <Button onClick={()=>navigate("/address")} className="w-full bg-pink-600">Place Order</Button>
 
                     <Button variant="outline" className="w-full bg-transparent">
                       <Link to="/products">Continue Shopping</Link>

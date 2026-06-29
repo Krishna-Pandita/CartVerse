@@ -449,10 +449,10 @@ export const updateUser = async (req, res) => {
 
     user.firstName = firstName || user.firstName;
     user.lastName = lastName || user.lastName;
-    user.address = address || user.address;
-    user.city = city || user.city;
+    user.address = req.body.address || "";
+    user.city = req.body.city || "";
     user.phoneNo = phoneNo || user.phoneNo;
-    user.zipCode = zipCode || user.zipCode;
+    user.zipCode = req.body.zipCode || "";
     user.profilePic = profilepicUrl;
     user.role = role;
     user.profilePicPublicId = profilePicPublicId;

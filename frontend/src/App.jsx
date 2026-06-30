@@ -20,6 +20,7 @@ import AdminUsers from "./pages/admin/AdminUsers.jsx";
 import UserInfo from "./pages/admin/UserInfo.jsx";
 import ProtectedRoute from "./components/ui/ProtectedRoute.jsx";
 import SingleProduct from "./pages/SingleProduct.jsx";
+import AddressForm from "./pages/AddressForm.jsx";
 
 const router = createBrowserRouter([
   {
@@ -109,11 +110,22 @@ const router = createBrowserRouter([
         <Navbar />
         <Cart />
        </ProtectedRoute>
-        
-      
       </>
     ),
   },
+
+
+   {
+    path: "/address",
+    element: (
+      <>
+       <ProtectedRoute>
+       <AddressForm />
+       </ProtectedRoute>
+      </>
+    ),
+  },
+
 
  {
   path: "/dashboard",

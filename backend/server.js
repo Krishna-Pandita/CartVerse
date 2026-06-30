@@ -5,6 +5,8 @@ import userRoute from './routes/userRoute.js';
 import cors from 'cors';
 import productRoute from './routes/productRoute.js'
 import cartRoute from './routes/cartRoute.js'
+import orderRoute from './routes/orderRoute.js'
+
 
 dotenv.config();
 
@@ -21,6 +23,7 @@ app.use(express.json());
 app.use('/api/v1/user', userRoute);
 app.use('/api/v1/product', productRoute);
 app.use('/api/v1/cart', cartRoute);
+app.use('/api/v1/orders', orderRoute);
 
 
 app.get('/', (req, res) => {

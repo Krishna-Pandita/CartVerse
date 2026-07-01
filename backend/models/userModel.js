@@ -28,7 +28,7 @@ otpExpiry: {
     address: { type: String },
     city: { type: String },
     zipCode: { type: String },
-    PhoneNo: { type: String },
+    phoneNo: { type: String },
   },
   { timestamps: true },
 );

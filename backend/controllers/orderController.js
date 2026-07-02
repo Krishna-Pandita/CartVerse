@@ -6,6 +6,8 @@ import { log } from "console";
 import { User } from "../models/userModel.js";
 import { Product } from "../models/productModel.js";
 
+
+
 export const createOrder = async (req, res) => {
   try {
     const { products, amount, tax, shipping, currency } = req.body;
@@ -44,6 +46,8 @@ export const createOrder = async (req, res) => {
     });
   }
 };
+
+
 
 export const verifyPayment = async (req, res) => {
   try {
@@ -106,6 +110,8 @@ export const verifyPayment = async (req, res) => {
         })
   }
 };
+
+
 
 export const getMyOrder = async (req,res)=>{
   try{
@@ -178,7 +184,6 @@ export const getAllOrdersAdmin = async (req,res)=>{
 
 
 
-
 export const getSalesData = async(req,res)=>{
   try{
     const totalUsers = await User.countDocuments({}); 
@@ -197,7 +202,6 @@ const totalSaleAgg = await Order.aggregate([
   }
 ]);
 
-console.log("TotalSalesAgg:", totalSaleAgg);
 
 const totalSales = totalSaleAgg[0]?.total || 0;
 const thirtyDaysAgo = new Date();

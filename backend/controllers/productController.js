@@ -2,6 +2,9 @@ import { Product } from "../models/productModel.js";
 import cloudinary from "../utils/cloudinary.js";
 import getDataUri from "../utils/dataUri.js";
 
+
+
+
 export const addProduct = async (req, res) => {
   try {
     const { productName, productDesc, productPrice, category, brand } =
@@ -54,6 +57,8 @@ export const addProduct = async (req, res) => {
   }
 };
 
+
+
 export const getAllProduct = async (_, res) => {
   try {
     const products = await Product.find();
@@ -76,6 +81,8 @@ export const getAllProduct = async (_, res) => {
     });
   }
 };
+
+
 
 export const deleteProduct = async (req, res) => {
   try {
@@ -111,6 +118,8 @@ export const deleteProduct = async (req, res) => {
     });
   }
 };
+
+
 
 export const updateProduct = async (req, res) => {
   try {

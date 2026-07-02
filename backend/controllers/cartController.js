@@ -1,6 +1,9 @@
 import { Cart } from "../models/cartModel.js";
 import { Product } from "../models/productModel.js";
 
+
+
+
 export const getCart = async (req, res) => {
   try {
     const userId = req.id;
@@ -20,6 +23,8 @@ export const getCart = async (req, res) => {
     });
   }
 };
+
+
 
 export const addToCart = async (req, res) => {
   try {
@@ -98,6 +103,8 @@ export const addToCart = async (req, res) => {
   }
 };
 
+
+
 export const updateQuantity = async (req, res) => {
   try {
     const userId = req.id;
@@ -142,6 +149,8 @@ export const updateQuantity = async (req, res) => {
   }
 };
 
+
+
 export const removeFromCart = async (req, res) => {
   try {
     const userId = req.id;
@@ -177,4 +186,5 @@ export const removeFromCart = async (req, res) => {
     });
   }
 };
+
 

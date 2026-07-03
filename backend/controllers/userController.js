@@ -7,6 +7,7 @@ import { sendOTPMail } from "../emailVerify/sendOTPMail.js";
 import cloudinary from "../utils/cloudinary.js";
 
 
+
 export const register = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
@@ -52,6 +53,8 @@ export const register = async (req, res) => {
     });
   }
 };
+
+
 
 export const verify = async (req, res) => {
   try {
@@ -107,6 +110,8 @@ export const verify = async (req, res) => {
   }
 };
 
+
+
 export const reVerify = async (req, res) => {
   try {
     const { email } = req.body;
@@ -136,6 +141,8 @@ export const reVerify = async (req, res) => {
     });
   }
 };
+
+
 
 export const login = async (req, res) => {
   try {
@@ -210,6 +217,8 @@ export const login = async (req, res) => {
   }
 };
 
+
+
 export const logout = async (req, res) => {
   try {
     const userId = req.id;
@@ -226,6 +235,8 @@ export const logout = async (req, res) => {
     });
   }
 };
+
+
 
 export const forgotPassword = async (req, res) => {
   try {
@@ -257,6 +268,8 @@ export const forgotPassword = async (req, res) => {
     });
   }
 };
+
+
 
 export const verifyOTP = async (req, res) => {
   try {
@@ -314,6 +327,8 @@ export const verifyOTP = async (req, res) => {
   }
 };
 
+
+
 export const changePassword = async (req, res) => {
   try {
     const { email } = req.params;
@@ -356,6 +371,8 @@ export const changePassword = async (req, res) => {
   }
 };
 
+
+
 export const allUser = async (req, res) => {
   try {
     const users = await User.find();
@@ -370,6 +387,8 @@ export const allUser = async (req, res) => {
     });
   }
 };
+
+
 
 export const getUserById = async (req, res) => {
   try {
@@ -394,6 +413,8 @@ export const getUserById = async (req, res) => {
     });
   }
 };
+
+
 
 export const updateUser = async (req, res) => {
   try {

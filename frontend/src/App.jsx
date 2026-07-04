@@ -21,6 +21,7 @@ import UserInfo from "./pages/admin/UserInfo.jsx";
 import ProtectedRoute from "./components/ui/ProtectedRoute.jsx";
 import SingleProduct from "./pages/SingleProduct.jsx";
 import AddressForm from "./pages/AddressForm.jsx";
+import OrderSuccess from "./pages/OrderSuccess.jsx";
 
 const router = createBrowserRouter([
   {
@@ -121,6 +122,18 @@ const router = createBrowserRouter([
       <>
        <ProtectedRoute>
        <AddressForm />
+       </ProtectedRoute>
+      </>
+    ),
+  },
+
+
+   {
+    path: "/order-success",
+    element: (
+      <>
+       <ProtectedRoute>
+       <OrderSuccess />
        </ProtectedRoute>
       </>
     ),

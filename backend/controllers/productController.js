@@ -50,7 +50,7 @@ export const addProduct = async (req, res) => {
       product: newProduct,
     });
   } catch (error) {
-    return res.staus(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });

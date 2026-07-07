@@ -1,8 +1,10 @@
 import React from "react";
 import mobileicon from "../assets/mobileicon.png";
 import { Button } from "./ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
   return (
     <section className="bg-gradient-to-r from-blue-600 to-purple-600  text-white py-16">
       <div className="max-w-7xl mx-auto px-4">
@@ -17,12 +19,16 @@ const Hero = () => {
               smartphones, laptops, and more.
             </p>
             <div className="flex gap-4 flex-4 sm:flex-row">
-              <Button className="bg-white text-blue-600 hover:bg-gray-200 cursor-pointer">
+              
+              <p className="pt-1">Discover More</p>
+
+              <Button onClick={() => navigate("/products")} className="bg-white text-blue-600 hover:bg-gray-200 cursor-pointer">
                 Shop Now
               </Button>
-              <Button variant="outline" className="border-white text-white hover:text-blue-600 hover:bg-white cursor-pointer bg-transparent">
+              
+              {/* <Button variant="outline" className="border-white text-white hover:text-blue-600 hover:bg-white cursor-pointer bg-transparent">
               View Deals
-              </Button>
+              </Button> */}
             </div>
           </div>
 

@@ -20,7 +20,7 @@ export default function Footer() {
           <h3 className="text-white font-semibold mb-3">Quick Links</h3>
           <ul className="space-y-2 text-sm">
             <li><Link to="/" className="hover:text-white">Home</Link></li>
-            <li><Link to="/shop" className="hover:text-white">Shop</Link></li>
+            <li><Link to="/products" className="hover:text-white">Shop</Link></li>
             <li><Link to="/cart" className="hover:text-white">Cart</Link></li>
             <li><Link to="/about" className="hover:text-white">About</Link></li>
           </ul>
@@ -30,7 +30,7 @@ export default function Footer() {
         <div>
           <h3 className="text-white font-semibold mb-3">Customer Service</h3>
           <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:text-white">Contact Us</a></li>
+            <li><Link to="/contact" className="hover:text-white">Contact Us</Link></li>
             <li><a href="#" className="hover:text-white">Shipping and Returns</a></li>
             <li><a href="#" className="hover:text-white">FAQs</a></li>
             <li><a href="#" className="hover:text-white">Order Tracking</a></li>

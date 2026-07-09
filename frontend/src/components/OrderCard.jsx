@@ -76,7 +76,14 @@ const OrderCard = ({ userOrder }) => {
                 <div className="bg-white">
                   <h3 className="font-medium my-2 py-2 px-2">Products </h3>
                   <ul className="space-y-2">
+
                     {order.products.map((product, index) => (
+  
+  <>
+                      
+ {console.log(product)}
+    {console.log(product.productId)}
+    {console.log(product.productId?.productImg)}
                       <li
                         key={index}
                         className="flex items-center justify-between
@@ -86,8 +93,8 @@ const OrderCard = ({ userOrder }) => {
                           onClick={() =>
                             navigate(`/products/${product?.productId?._id}`)
                           }
-                          src={product.productId?.productImg?.[0].url}
-                          alt={product.productId.name}
+                          src={product.productId?.productImg?.[0]?.url}
+                        alt={product.productId?.productName || "Product"}
                           className="w-16 cursor-pointer"
                         />
                         <span className="w-[300px] line-clamp-2">
@@ -102,6 +109,7 @@ const OrderCard = ({ userOrder }) => {
                           {product.quantity}
                         </span>
                       </li>
+                      </>
                     ))}
                   </ul>
                 </div>

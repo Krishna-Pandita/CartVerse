@@ -22,6 +22,8 @@ import ProtectedRoute from "./components/ui/ProtectedRoute.jsx";
 import SingleProduct from "./pages/SingleProduct.jsx";
 import AddressForm from "./pages/AddressForm.jsx";
 import OrderSuccess from "./pages/OrderSuccess.jsx";
+import About from "./pages/About.jsx";
+import Contact from "./pages/Contact.jsx";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +60,30 @@ const router = createBrowserRouter([
       </>
     ),
   },
+
+
+  {
+    path: "/about",
+    element: (
+      <>
+        <About />
+      </>
+    ),
+  },
+
+
+   {
+    path: "/contact",
+    element: (
+      <>
+      <Navbar />
+        <Contact />
+      </>
+    ),
+  },
+
+
+
    {
     path: "/verify/:token",
     element: (

@@ -59,23 +59,32 @@ const handleMaxChange = (e) => {
     <h1 className="mt-5 font-semibold text-xl">Category</h1>
    
    <div className="flex flex-col gap-2 mt-3">
-    {
-         uniqueCategory.map((item,index) =>{
-          return <div key={index} className="flex items-center gap-2">
-            <input type="radio" checked = {category === item} onChange={()=> handleCategoryClick(item)}/>
-            <label htmlFor="">{item}</label>
-          </div>
-         })
-     }
+   {uniqueCategory.map((item, index) => (
+  <div key={index} className="flex items-center gap-2">
+    <input
+      id={`category-${index}`}
+      type="radio"
+      checked={category === item}
+      onChange={() => handleCategoryClick(item)}
+    />
+
+    <label
+      htmlFor={`category-${index}`}
+      className="cursor-pointer"
+    >
+      {item}
+    </label>
+  </div>
+))}
    </div>
 
 
 
 
           {/* BRANDS */}
-    <h1 className="mt-5 font-semibold text-xl">Brand</h1>
+    <h1 className="mt-5 font-semibold text-[19px]">Brand</h1>
    
-     <select className="bg-white w-full p-2 border-gray-200 border-2 rounded-md" value={brand} 
+     <select className=" text-[13px] bg-white w-full p-2 border-gray-200 border-2 rounded-md" value={brand} 
       onChange={handleBrandChange}>
       {
         uniqueBrands.map((item,index) =>{
@@ -97,14 +106,14 @@ const handleMaxChange = (e) => {
             Price Range: ₹{priceRange[0]} - ₹{priceRange[1]}
           </label>
           <div className="flex gap-2 items-center">
-              <input type="number" min="0" max="5000" value={priceRange[0]} onChange={handleMinChange} className="w-20 p-1 border border-gray-300 rounded"/>
+              <input type="number" min="0" max="7000" value={priceRange[0]} onChange={handleMinChange} className="w-20 p-1 border border-gray-300 rounded"/>
               <span>-</span>
-              <input type="number" min="0" max="9999999" value={priceRange[1]} onChange={handleMaxChange}  className="w-24 p-1 border border-gray-300 rounded"/>
+              <input type="number" min="0" max="1000000" value={priceRange[1]} onChange={handleMaxChange}  className="w-24 p-1 border border-gray-300 rounded"/>
           </div>
-              <input type="range" min="0" max="5000" step="100" className="w-full " value={priceRange[0]}
+              <input type="range" min="0" max="7000" step="100" className="w-full " value={priceRange[0]}
                onChange={handleMinChange}/>
 
-              <input type="range" min="0" max="9999999" step="100" className="w-full " value={priceRange[1]} onChange={handleMaxChange} />
+              <input type="range" min="0" max="1000000" step="100" className="w-full " value={priceRange[1]} onChange={handleMaxChange} />
 
      </div>
 

@@ -1,11 +1,11 @@
 import React from "react";
-import icon1 from "../../assets/icon1.png";
 import { Link, useNavigate } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "./button";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "@/redux/userSlice";
 import { toast } from "sonner";
+import cartverse_bag_star_icon from "../../assets/cartverse_bag_star_icon.png";
 
 function Navbar() {
   const {user} = useSelector((store) => store.user);
@@ -44,9 +44,9 @@ const accessToken = localStorage.getItem("accessToken");
     <header className="bg-pink-50 fixed w-full z-20 border-b border-pink-200">
       <div className="max-w-7xl mx-auto h-[77px] flex justify-between items-center py-3">
         {/* Logo Section */}
-        <div className="flex justify-center items-center gap-2">
-          <img src={icon1} alt="Logo" className="h-10 w-auto" />
-          <h1 className="font-semibold text-[23px] text-gray-800">CartVerse</h1>
+        <div className="flex justify-center items-center">
+          <img onClick={() => navigate("/")} src={cartverse_bag_star_icon} alt="Logo" className=" cursor-pointer h-12 w-auto" />
+          <h1 className="font-semibold text-[22px] text-gray-600">CartVerse</h1>
         </div>
         {/* nav section */}
         <nav className="flex justify-between items-center gap-9">

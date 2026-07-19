@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
+import MyOrder from "./MyOrder";
 
 const Profile = () => {
   const { user } = useSelector((store) => store.user);
@@ -58,8 +59,7 @@ const Profile = () => {
 
     setLoading(true); // Start loading
 
-    const accessToken = localStorage.getItem("token");
-
+const accessToken = localStorage.getItem("accessToken");
     try {
       const formData = new FormData();
 
@@ -106,13 +106,14 @@ const Profile = () => {
   return (
     <div className="pt-23 min-h-screen bg-gray-100">
       <Tabs defaultValue="Profile" className="max-w-7xl mx-auto items-center">
-        <TabsList>
+        <TabsList className="gap-5">
           <TabsTrigger value="Profile">Profile</TabsTrigger>
           <TabsTrigger value="orders">Orders</TabsTrigger>
           {/* <TabsTrigger value="analytics">Analytics</TabsTrigger>
           <TabsTrigger value="reports">Reports</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger> */}
         </TabsList>
+
         <TabsContent value="Profile">
           <div>
             <div className="flex flex-col items-center bg-gray-100 justify-center">
@@ -149,7 +150,7 @@ const Profile = () => {
                   onSubmit={handleSubmit}
                   className="space-y-4 shadow-lg p-5 rounded-lg bg-white "
                 >
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-4 w-[420px]">
                     <div>
                       <label className="block text-sm font-medium text-gray-700">
                         First Name:
@@ -268,19 +269,12 @@ const Profile = () => {
             </div>
           </div>
         </TabsContent>
+
         <TabsContent value="orders">
-          <Card>
-            <CardHeader>
-              <CardTitle>Orders</CardTitle>
-              <CardDescription>
-                View your order history and manage your purchases.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              Check the status of your recent orders and manage returns.
-            </CardContent>
-          </Card>
+               <MyOrder />
         </TabsContent>
+
+
         {/* <TabsContent value="overview">
           <Card>
             <CardHeader>

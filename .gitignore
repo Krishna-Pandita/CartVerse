@@ -6,3 +6,18 @@ frontend/.env
 
 dist
 build
+
+
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.*
+
+# Build output
+dist/
+build/
+
+# Kilo Code
+.kilo/

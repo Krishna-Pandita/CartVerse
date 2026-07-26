@@ -47,7 +47,7 @@ const UserInfo = () => {
       formData.append("firstName", updateUser.firstName);
       formData.append("lastName", updateUser.lastName);
       formData.append("email", updateUser.email);
-     formData.append("phoneNo", updateUser.phoneNo); // changed
+      formData.append("phoneNo", updateUser.phoneNo); // changed
       formData.append("address", updateUser.address || "");
       formData.append("city", updateUser.city || "");
       formData.append("zipCode", updateUser.zipCode || "");
@@ -105,10 +105,15 @@ const UserInfo = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100">
           <div className="flex justify-between gap-2">
-            <Button onClick={() => navigate(-1)}>
-              <ArrowLeft />
+            <Button
+              variant="outline"
+              size="icon"
+              className="rounded-xl  cursor-pointer"
+              onClick={() => navigate(-1)}
+            >
+              <ArrowLeft className="h-5 w-5" />
             </Button>
-            <h1 className="font-bold mb-7 text-2xl text-gray-800">
+            <h1 className="font-bold mb-7 text-xl text-gray-800">
               Update Profile
             </h1>
           </div>
@@ -193,8 +198,8 @@ const UserInfo = () => {
                 </Label>
                 <Input
                   type="tel"
-                 name="phoneNo"
-value={updateUser?.phoneNo || ""}
+                  name="phoneNo"
+                  value={updateUser?.phoneNo || ""}
                   onChange={handleChange}
                 />
               </div>
@@ -244,9 +249,13 @@ value={updateUser?.phoneNo || ""}
               <div className="flex gap-3 items-center">
                 <Label className="block text-sm font-medium">Role :</Label>
 
-                <RadioGroup value={updateUser?.role}
-                onValueChange={(value)=>setUpdateUser({...updateUser, role:value})}
-                className="flex flex-row gap-6 items-center">
+                <RadioGroup
+                  value={updateUser?.role}
+                  onValueChange={(value) =>
+                    setUpdateUser({ ...updateUser, role: value })
+                  }
+                  className="flex flex-row gap-6 items-center"
+                >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="user" id="user" />
                     <Label htmlFor="user">User</Label>

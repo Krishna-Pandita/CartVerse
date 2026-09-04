@@ -9,7 +9,7 @@ import { singleUpload } from '../middleware/multer.js';
 const router = express.Router();
 
 router.post('/register', register);
-router.post('/verify', verify);
+router.get('/verify/:token', verify);
 router.post('/reverify', reVerify);
 router.post('/login', login);
 router.post('/logout', isAuthenticated, logout);
@@ -19,9 +19,6 @@ router.post('/change-password/:email', changePassword);
 router.get('/all-users', isAuthenticated, isAdmin, allUser);              //Added Routes
 router.get('/get-user/:userId', getUserById);  
 router.put('/update/:id', isAuthenticated, singleUpload, updateUser);  // Added route for profile update
-
-
-
 
 
 export default router;

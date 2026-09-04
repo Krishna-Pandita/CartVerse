@@ -45,7 +45,7 @@ const accessToken = localStorage.getItem("accessToken");
       <div className="max-w-7xl mx-auto h-[77px] flex justify-between items-center py-3">
         {/* Logo Section */}
         <div className="flex justify-center items-center">
-          <img onClick={() => navigate("/")} src={cartverse_bag_star_icon} alt="Logo" className=" cursor-pointer h-12 w-auto" />
+          <img onClick={() => navigate("/")} src={cartverse_bag_star_icon} alt="Logo" className=" cursor-pointer h-10 w-12" />
           <h1 className="font-semibold text-[22px] text-gray-600">CartVerse</h1>
         </div>
         {/* nav section */}

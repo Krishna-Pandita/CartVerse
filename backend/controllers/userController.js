@@ -35,11 +35,16 @@ export const register = async (req, res) => {
       password: hashedPaswword,
     });
 
-    const token = jwt.sign({ id: newUser._id }, process.env.SECRET_KEY, {
-      expiresIn: "10m",
-    });
-    verifyEmail(token, email);
-    newUser.token = token;
+   const token = jwt.sign(
+  { id: newUser._id },
+  process.env.SECRET_KEY,
+  { expiresIn: "10m" }
+);
+
+newUser.token = token;
+await newUser.save();
+
+verifyEmail(token, email);
 
     res.status(201).json({
       success: true,
@@ -51,65 +56,72 @@ export const register = async (req, res) => {
     res.status(500).json({
       message: error.message,
     });
+  
   }
 };
 
 
-
 export const verify = async (req, res) => {
   try {
-    const authHeader = req.headers.authorization;
+    // Get token from URL
+    const { token } = req.params;
 
-    // 1. Check if the header exists or starts with "Bearer "
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (!token) {
       return res.status(400).json({
         success: false,
-        message: "Authorization token is missing or invalid",
+        message: "Verification token is missing",
       });
     }
 
-    // 2. Extract the token from the header
-    const token = authHeader.split(" ")[1];
     let decoded;
 
+    // Verify JWT
     try {
-      // 3. Verify the token using your secret key
       decoded = jwt.verify(token, process.env.SECRET_KEY);
     } catch (error) {
       if (error.name === "TokenExpiredError") {
         return res.status(400).json({
           success: false,
-          message: "The Registered token has expired",
+          message: "The verification token has expired",
         });
       }
 
       return res.status(400).json({
         success: false,
-        message: "Token Verification failed",
+        message: "Token verification failed",
       });
     }
+
+    // Find user
     const user = await User.findById(decoded.id);
+
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not Found",
+        message: "User not found",
       });
     }
+
+    // Verify user
     user.token = null;
     user.isVerified = true;
+
     await user.save();
+
     return res.status(200).json({
       success: true,
-      message: "Email Verified successfully",
+      message: "Email verified successfully",
     });
+
   } catch (error) {
-    res.status(500).json({
+    console.log("VERIFY ERROR:", error);
+
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
-
 
 
 export const reVerify = async (req, res) => {
@@ -161,6 +173,12 @@ export const login = async (req, res) => {
         message: "User not exists",
       });
     }
+
+
+    console.log("EMAIL:", email);
+console.log("ENTERED PASSWORD:", password);
+console.log("STORED PASSWORD:", existingUser.password);
+
 
     const isPasswordValid = await bcrypt.compare(
       password,

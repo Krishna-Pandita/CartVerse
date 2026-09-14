@@ -6,12 +6,16 @@ dotenv.config();
 export const verifyEmail = (token, email) => {
   // Create transporter
   const transporter = nodemailer.createTransport({
-    service: "gmail",
-
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
     auth: {
       user: process.env.MAIL_USER,
       pass: process.env.MAIL_PASS,
     },
+    tls: {
+      rejectUnauthorized: false
+    }
   });
 
   // Mail configuration

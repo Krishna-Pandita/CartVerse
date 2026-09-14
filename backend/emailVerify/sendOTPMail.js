@@ -20,7 +20,7 @@ export const sendOTPMail = (email, otp) => {
 
   // Mail configuration
   const mailConfiguration = {
-    from: process.env.MAIL_USER,
+    from: process.env.MAIL_FROM || process.env.MAIL_USER,
 
     to: email,
 

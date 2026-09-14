@@ -27,7 +27,7 @@ const loadCart = async() =>{
   try {
       const res = await axios.get(API, {
         headers:{
-          Authorization: 'Bearer ${accessToken}'
+          Authorization: `Bearer ${accessToken}`
         }
       })
       if(res.data.success){

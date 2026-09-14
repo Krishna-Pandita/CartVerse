@@ -121,6 +121,7 @@ useEffect(() => {
     <CardTitle>Sales (Last 30 Days)</CardTitle>
   </CardHeader>
 
+
   <CardContent style={{ height: 300 }}>
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart data={stats.sales}>

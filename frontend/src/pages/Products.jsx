@@ -33,7 +33,7 @@ const Products = () => {
     try {
       setLoading(true);
      const res = await axios.get(`${API_URL}/api/v1/product/getallproducts`);
-      );
+      
 
       if (res.data.success) {
         setallProducts(res.data.products);

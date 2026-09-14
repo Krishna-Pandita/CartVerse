@@ -6,9 +6,9 @@ dotenv.config();
 export const sendOTPMail = (email, otp) => {
   // Create transporter
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    host: process.env.MAIL_HOST || "smtp.gmail.com",
+    port: process.env.MAIL_PORT || 465,
+    secure: process.env.MAIL_PORT == 465,
     auth: {
       user: process.env.MAIL_USER,
       pass: process.env.MAIL_PASS,

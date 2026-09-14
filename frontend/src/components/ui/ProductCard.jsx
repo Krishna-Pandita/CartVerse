@@ -23,7 +23,7 @@ const accessToken = localStorage.getItem("accessToken");
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/v1/cart/add",
+        `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/v1/cart/add`,
         { productId },
         {
           headers: {

@@ -19,7 +19,7 @@ const handleLogout = async () => {
   try {
 const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
-      await fetch("http://localhost:5000/api/v1/user/logout", {
+      await fetch(`${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/v1/user/logout`, {
         method: "POST",
         headers: {
           authorization: `Bearer ${accessToken}`,

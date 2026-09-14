@@ -42,7 +42,7 @@ const Login = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        `http://localhost:5000/api/v1/user/login`,
+        `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/v1/user/login`,
         formData,
         {
           headers: {

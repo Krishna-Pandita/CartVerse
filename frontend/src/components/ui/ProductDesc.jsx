@@ -12,7 +12,7 @@ const ProductDesc = ({product}) => {
 
   const addToCart = async(productId)=>{
     try {
-      const res = await axios.post(`http://localhost:5000/api/v1/cart/add`, {productId},{
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/v1/cart/add`, {productId},{
         headers:{
           Authorization: `Bearer ${accessToken}`
         }

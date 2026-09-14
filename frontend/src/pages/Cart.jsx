@@ -19,7 +19,7 @@ const Cart = () => {
   const total = subtotal + shipping + tax;
   const navigate = useNavigate();
 
-  const API = "http://localhost:5000/api/v1/cart";
+  const API = `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/v1/cart`;
   const accessToken = localStorage.getItem("accessToken");
 
 

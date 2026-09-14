@@ -77,7 +77,7 @@ const accessToken = localStorage.getItem("accessToken");
       }
 
       const res = await fetch(
-        `http://localhost:5000/api/v1/user/update/${userId}`,
+        `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/v1/user/update/${userId}`,
         {
           method: "PUT",
           headers: {

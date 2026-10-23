@@ -9,6 +9,7 @@ export const verifyEmail = (token, email) => {
     host: process.env.MAIL_HOST || "smtp.gmail.com",
     port: process.env.MAIL_PORT || 465,
     secure: process.env.MAIL_PORT == 465,
+    family: 4,
     auth: {
       user: process.env.MAIL_USER,
       pass: process.env.MAIL_PASS,

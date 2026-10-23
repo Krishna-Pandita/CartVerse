@@ -17,10 +17,22 @@ dotenv.config();
 
 
 const app = express();
+const allowedOrigins = [
+  "https://cartverse-1.onrender.com",
+  "http://localhost:5173"
+];
+
 app.use(cors({
-  origin: "https://cartverse-1.onrender.com",
-  credentials:true                           // Update with your frontend URL
-}))
+  origin: (origin, callback) => {
+    // Allow requests without an Origin header, such as some server-to-server requests
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
+  credentials: true
+}));
 
 const PORT = process.env.PORT || 5000;
 

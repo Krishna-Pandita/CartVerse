@@ -1,12 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, Camera } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import profile from "../../assets/profile.png";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
-import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
@@ -16,8 +15,8 @@ const UserInfo = () => {
   const navigate = useNavigate();
   const [updateUser, setUpdateUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
   const [file, setFile] = useState(null);
-  const { user } = useSelector((store) => store.user);
   const params = useParams();
   const userId = params.id;
   const dispatch = useDispatch();
@@ -28,30 +27,30 @@ const UserInfo = () => {
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
-    setFile(selectedFile);
-    setUpdateUser({
-      ...updateUser,
-      profilePic: URL.createObjectURL(selectedFile),
-    });
+    if (selectedFile) {
+      setFile(selectedFile);
+      setUpdateUser({
+        ...updateUser,
+        profilePic: URL.createObjectURL(selectedFile),
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    setLoading(true); // Start loading
+    setLoading(true);
 
     const accessToken = localStorage.getItem("accessToken");
     try {
       const formData = new FormData();
-
-      formData.append("firstName", updateUser.firstName);
-      formData.append("lastName", updateUser.lastName);
-      formData.append("email", updateUser.email);
-      formData.append("phoneNo", updateUser.phoneNo); // changed
+      formData.append("firstName", updateUser.firstName || "");
+      formData.append("lastName", updateUser.lastName || "");
+      formData.append("email", updateUser.email || "");
+      formData.append("phoneNo", updateUser.phoneNo || "");
       formData.append("address", updateUser.address || "");
       formData.append("city", updateUser.city || "");
       formData.append("zipCode", updateUser.zipCode || "");
-      formData.append("role", updateUser.role);
+      formData.append("role", updateUser.role || "user");
 
       if (file) {
         formData.append("file", file);
@@ -65,93 +64,107 @@ const UserInfo = () => {
             authorization: `Bearer ${accessToken}`,
           },
           body: formData,
-        },
+        }
       );
 
       const data = await res.json();
 
       if (data.success) {
-        toast.success(data.message);
+        toast.success(data.message || "User profile updated");
         dispatch(setUser(data.user));
+        navigate("/dashboard/users");
       } else {
-        toast.error(data.message);
+        toast.error(data.message || "Failed to update user profile");
       }
     } catch (error) {
       console.log(error);
       toast.error("Failed to update profile");
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
   const getUserDetails = async () => {
     try {
+      setFetching(true);
       const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/v1/user/get-user/${userId}`,
+        `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/v1/user/get-user/${userId}`
       );
       if (res.data.success) {
         setUpdateUser(res.data.user);
       }
     } catch (error) {
       console.log(error);
+      toast.error("Failed to load user details");
+    } finally {
+      setFetching(false);
     }
   };
+
   useEffect(() => {
     getUserDetails();
-  }, []);
+  }, [userId]);
+
+  if (fetching) {
+    return (
+      <div className="md:pl-72 lg:pl-80 flex items-center justify-center min-h-[60vh] w-full">
+        <Loader2 className="h-10 w-10 animate-spin text-pink-600" />
+      </div>
+    );
+  }
 
   return (
-    <div className="pt-10 min-h-screen bg-gray-100">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100">
-          <div className="flex justify-between gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              className="rounded-xl  cursor-pointer"
-              onClick={() => navigate(-1)}
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <h1 className="font-bold mb-7 text-xl text-gray-800">
-              Update Profile
-            </h1>
-          </div>
+    <div className="md:pl-72 lg:pl-80 px-4 sm:px-6 md:pr-8 pt-32 sm:pt-36 md:pt-28 pb-16 min-h-screen bg-gray-50/70 w-full">
+      <div className="max-w-3xl mx-auto">
+        <div className="flex items-center gap-3 mb-6">
+          <Button
+            variant="outline"
+            size="sm"
+            className="rounded-xl cursor-pointer h-9 w-9 border-gray-300"
+            onClick={() => navigate(-1)}
+            aria-label="Go back"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+            Edit User Profile
+          </h1>
+        </div>
 
-          <div className="w-full flex gap-10 justify-between items-start px-7 max-w-2xl">
-            {/* Profile update form would go here */}
-            <div className="flex items-center flex-col">
-              <img
-                src={updateUser?.profilePic || profile}
-                alt="Profile"
-                className="w-32 h-32 rounded-full mb-4 object-cover border-4 border-pink-800"
-              />
-
-              {/* <img
-                    src={profile}
-                    alt="Profile"
-                    className="w-32 h-32 rounded-full mb-4 object-cover border-4 border-pink-800"
-                  /> */}
-
-              <Label className=" w-[150px] mt-2 cursor-pointer bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700">
-                Change Picture
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleFileChange}
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-xs p-5 sm:p-8">
+          <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
+            {/* Avatar Section */}
+            <div className="flex flex-col items-center shrink-0">
+              <div className="relative group">
+                <img
+                  src={updateUser?.profilePic || profile}
+                  alt="Profile"
+                  className="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-pink-500 shadow-md bg-white"
                 />
-              </Label>
+                <label
+                  htmlFor="user-pic-upload"
+                  className="absolute bottom-1 right-1 bg-pink-600 text-white p-2 rounded-full cursor-pointer hover:bg-pink-700 shadow-md transition-all"
+                  title="Change picture"
+                >
+                  <Camera className="w-4 h-4" />
+                  <input
+                    id="user-pic-upload"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </label>
+              </div>
+              <span className="text-xs text-gray-400 mt-2">Avatar Preview</span>
             </div>
-            {/* profile form */}
-            <form
-              onSubmit={handleSubmit}
-              className="space-y-4 shadow-lg p-5 rounded-lg bg-white "
-            >
-              <div className="grid grid-cols-2 gap-4 w-[420px]">
+
+            {/* User Edit Form */}
+            <form onSubmit={handleSubmit} className="flex-1 w-full space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <Label className="block text-sm font-medium text-gray-700">
-                    First Name:
+                  <Label className="text-xs font-semibold text-gray-700">
+                    First Name
                   </Label>
                   <Input
                     type="text"
@@ -159,13 +172,13 @@ const UserInfo = () => {
                     value={updateUser?.firstName || ""}
                     onChange={handleChange}
                     placeholder="Joe"
-                    className="w-fulll border rounded-lg px-3 py-2 mt-1"
+                    className="mt-1"
                   />
                 </div>
 
                 <div>
-                  <Label className="block text-sm font-medium text-gray-700">
-                    Last Name:
+                  <Label className="text-xs font-semibold text-gray-700">
+                    Last Name
                   </Label>
                   <Input
                     type="text"
@@ -173,115 +186,126 @@ const UserInfo = () => {
                     value={updateUser?.lastName || ""}
                     onChange={handleChange}
                     placeholder="Doe"
-                    className="w-fulll border rounded-lg px-3 py-2 mt-1"
+                    className="mt-1"
                   />
                 </div>
               </div>
 
               <div>
-                <Label className="block text-sm font-medium text-gray-700">
-                  Email:
+                <Label className="text-xs font-semibold text-gray-700">
+                  Email Address
                 </Label>
                 <Input
                   type="email"
                   name="email"
                   value={updateUser?.email || ""}
-                  onChange={handleChange}
                   disabled
-                  className="w-fulll border rounded-lg px-3 py-2 mt-1 bg-gray-100 cursor-not-allowed"
+                  className="mt-1 bg-gray-100 text-gray-500 cursor-not-allowed"
                 />
               </div>
 
               <div>
-                <Label className="block text-sm font-medium text-gray-700">
-                  Phone Number:
+                <Label className="text-xs font-semibold text-gray-700">
+                  Phone Number
                 </Label>
                 <Input
                   type="tel"
                   name="phoneNo"
                   value={updateUser?.phoneNo || ""}
                   onChange={handleChange}
+                  placeholder="+91 9419123789"
+                  className="mt-1"
                 />
               </div>
 
               <div>
-                <Label className="block text-sm font-medium text-gray-700">
-                  Address:
+                <Label className="text-xs font-semibold text-gray-700">
+                  Address
                 </Label>
                 <Input
                   type="text"
                   name="address"
                   value={updateUser?.address || ""}
                   onChange={handleChange}
-                  placeholder="Enter your address"
-                  className="w-fulll border rounded-lg px-3 py-2 mt-1"
+                  placeholder="Street Address"
+                  className="mt-1"
                 />
               </div>
 
-              <div>
-                <Label className="block text-sm font-medium text-gray-700">
-                  City:
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-xs font-semibold text-gray-700">
+                    City
+                  </Label>
+                  <Input
+                    type="text"
+                    name="city"
+                    value={updateUser?.city || ""}
+                    onChange={handleChange}
+                    placeholder="City"
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label className="text-xs font-semibold text-gray-700">
+                    Zip Code
+                  </Label>
+                  <Input
+                    type="text"
+                    name="zipCode"
+                    value={updateUser?.zipCode || ""}
+                    onChange={handleChange}
+                    placeholder="Zip Code"
+                    className="mt-1"
+                  />
+                </div>
+              </div>
+
+              {/* Role Radio Group */}
+              <div className="pt-2">
+                <Label className="text-xs font-semibold text-gray-700 block mb-2">
+                  Account Role
                 </Label>
-                <Input
-                  type="text"
-                  name="city"
-                  value={updateUser?.city || ""}
-                  onChange={handleChange}
-                  placeholder="Enter your city"
-                  className="w-fulll border rounded-lg px-3 py-2 mt-1"
-                />
-              </div>
-
-              <div>
-                <Label className="block text-sm font-medium text-gray-700">
-                  Zip Code:
-                </Label>
-                <Input
-                  type="text"
-                  name="zipCode"
-                  value={updateUser?.zipCode || ""}
-                  onChange={handleChange}
-                  placeholder="Enter your zip code"
-                  className="w-fulll border rounded-lg px-3 py-2 mt-1"
-                />
-              </div>
-
-              <div className="flex gap-3 items-center">
-                <Label className="block text-sm font-medium">Role :</Label>
 
                 <RadioGroup
-                  value={updateUser?.role}
+                  value={updateUser?.role || "user"}
                   onValueChange={(value) =>
                     setUpdateUser({ ...updateUser, role: value })
                   }
                   className="flex flex-row gap-6 items-center"
                 >
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="user" id="user" />
-                    <Label htmlFor="user">User</Label>
+                    <RadioGroupItem value="user" id="user-role" />
+                    <Label htmlFor="user-role" className="text-sm font-medium cursor-pointer">
+                      User
+                    </Label>
                   </div>
 
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="admin" id="admin" />
-                    <Label htmlFor="admin">Admin</Label>
+                    <RadioGroupItem value="admin" id="admin-role" />
+                    <Label htmlFor="admin-role" className="text-sm font-medium cursor-pointer">
+                      Admin
+                    </Label>
                   </div>
                 </RadioGroup>
               </div>
 
-              <Button
-                type="submit"
-                disabled={loading}
-                className="bg-pink-600 text-white hover:bg-pink-700 w-full py-2 rounded-lg mt-4 font-semibold"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Updating...
-                  </>
-                ) : (
-                  "Update Profile"
-                )}
-              </Button>
+              <div className="pt-3">
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold py-2.5 rounded-lg cursor-pointer shadow-md transition-all"
+                >
+                  {loading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" /> Saving...
+                    </span>
+                  ) : (
+                    "Save User Changes"
+                  )}
+                </Button>
+              </div>
             </form>
           </div>
         </div>

@@ -4,42 +4,73 @@ import { FaRegEdit } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 
 const Sidebar = () => {
+  const navItems = [
+    { to: "/dashboard/sales", label: "Dashboard", icon: LayoutDashboard },
+    { to: "/dashboard/add-product", label: "Add Product", icon: PackagePlus },
+    { to: "/dashboard/products", label: "Products", icon: PackageSearch },
+    { to: "/dashboard/users", label: "Users", icon: Users },
+    { to: "/dashboard/orders", label: "Orders", icon: FaRegEdit },
+  ];
+
   return (
-    <div className='hidden fixed md:block border-r bg-pink-50 border-pink-200 x-10 w-[300px] p-10 space-y-2 h-screen'>
-      <div className='text-center pt-15 px-3 space-y-2'>
-
-        <NavLink to="/dashboard/sales" className={({isActive}) => `text-xl ${isActive ? "bg-pink-600 text-gray-200":"bg-transparent"} flex items-center gap-2 font-bold cursor-pointer p-3 rounded-2xl w-full`}>
-          <LayoutDashboard/>
-          <span>Dashboard</span>
-        </NavLink>
-
-
-         <NavLink to="/dashboard/add-product" className={({isActive}) => `text-xl ${isActive ? "bg-pink-600 text-gray-200":"bg-transparent"} flex items-center gap-2 font-bold cursor-pointer p-3 rounded-2xl w-full`}>
-          <PackagePlus/>
-          <span>Add Product</span>
-        </NavLink>
-
-
-         <NavLink to="/dashboard/products" className={({isActive}) => `text-xl ${isActive ? "bg-pink-600 text-gray-200":"bg-transparent"} flex items-center gap-2 font-bold cursor-pointer p-3 rounded-2xl w-full`}>
-          <PackageSearch/>
-          <span>Products</span>
-        </NavLink>
-
-
-         <NavLink to="/dashboard/users" className={({isActive}) => `text-xl ${isActive ? "bg-pink-600 text-gray-200":"bg-transparent"} flex items-center gap-2 font-bold cursor-pointer p-3 rounded-2xl w-full`}>
-          <Users/>
-          <span>Users</span>
-        </NavLink>
-
-
-         <NavLink to="/dashboard/orders" className={({isActive}) => `text-xl ${isActive ? "bg-pink-600 text-gray-200":"bg-transparent"} flex items-center gap-2 font-bold cursor-pointer p-3 rounded-2xl w-full`}>
-          <FaRegEdit/>
-          <span>Orders</span>
-        </NavLink>
-
+    <>
+      {/* Mobile & Tablet Admin Sub-Nav Header (visible below md) */}
+      <div className="md:hidden fixed top-[68px] sm:top-[77px] left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-b border-pink-200 px-3 py-2 shadow-2xs">
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={({ isActive }) =>
+                  `flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors shrink-0 ${
+                    isActive
+                      ? "bg-pink-600 text-white shadow-2xs"
+                      : "bg-pink-50 text-gray-700 hover:bg-pink-100"
+                  }`
+                }
+              >
+                <Icon className="w-3.5 h-3.5" />
+                <span>{item.label}</span>
+              </NavLink>
+            );
+          })}
         </div>
-    </div>
-  )
-}
+      </div>
 
-export default Sidebar
+      {/* Desktop Fixed Sidebar (visible md and up) */}
+      <aside className="hidden md:block fixed top-[77px] left-0 bottom-0 w-64 lg:w-72 bg-pink-50/70 border-r border-pink-200 p-5 z-20 overflow-y-auto">
+        <div className="mb-4 px-3 py-1">
+          <p className="text-xs uppercase tracking-wider font-bold text-gray-400">
+            Admin Management
+          </p>
+        </div>
+
+        <nav className="space-y-1.5">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
+                    isActive
+                      ? "bg-pink-600 text-white shadow-xs"
+                      : "text-gray-700 hover:bg-pink-100/70 hover:text-gray-900"
+                  }`
+                }
+              >
+                <Icon className="w-5 h-5 shrink-0" />
+                <span>{item.label}</span>
+              </NavLink>
+            );
+          })}
+        </nav>
+      </aside>
+    </>
+  );
+};
+
+export default Sidebar;

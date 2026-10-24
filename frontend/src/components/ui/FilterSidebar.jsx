@@ -92,7 +92,18 @@ const FilterSidebar = ({
             onChange={(e) => setSearch(e.target.value)}
             className="bg-gray-50 pr-9 rounded-lg border-gray-200 w-full text-sm"
           />
-          <Search className="w-4 h-4 text-gray-400 absolute right-3 top-3 pointer-events-none" />
+          {search ? (
+            <button
+              type="button"
+              onClick={() => setSearch("")}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 cursor-pointer"
+              aria-label="Clear search"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          ) : (
+            <Search className="w-4 h-4 text-gray-400 absolute right-3 top-3 pointer-events-none" />
+          )}
         </div>
       </div>
 

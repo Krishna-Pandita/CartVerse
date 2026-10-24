@@ -9,7 +9,7 @@ import {
   setSelectedAddress,
 } from "@/redux/productSlice";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -28,6 +28,25 @@ const AddressForm = () => {
     zip: "",
     country: "",
   });
+
+  const loadCart = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) return;
+    try {
+      const res = await axios.get(`${backendUrl}/api/v1/cart`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      if (res.data.success) {
+        dispatch(setCart(res.data.cart));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    loadCart();
+  }, [dispatch]);
 
   const { cart, addresses, selectedAddress } = useSelector(
     (store) => store.product
@@ -66,12 +85,15 @@ const AddressForm = () => {
         `${backendUrl}/api/v1/orders/create-order`,
         {
           products: cart?.items?.map((item) => ({
-            productId: item.productId._id,
+            productId:
+              typeof item.productId === "object"
+                ? item.productId._id
+                : item.productId,
             quantity: item.quantity,
-          })),
-          tax,
-          shipping,
-          amount: total,
+          })) || [],
+          tax: Number(tax) || 0,
+          shipping: Number(shipping) || 0,
+          amount: Number(total) || 0,
           currency: "INR",
         },
         {
@@ -164,7 +186,7 @@ const AddressForm = () => {
       rzp.open();
     } catch (error) {
       console.error(error);
-      toast.error("Something went wrong while processing payment");
+      toast.error(error.response?.data?.message || "Something went wrong while processing payment");
     }
   };
 
@@ -315,6 +337,8 @@ const AddressForm = () => {
                       className="mt-1"
                     />
                   </div>
+
+
 
                   <div>
                     <Label htmlFor="country" className="text-xs font-semibold text-gray-700">
